@@ -1,32 +1,41 @@
 //const { response } = require("express");
 
-const signUp = document.getElementById('signup');
+const form = document.querySelector('.form')
 const login = document.getElementById('login');
-const username = document.getElementById('username');
-const password = document.getElementById('login');
 
-async function newUser (signUp, password){
-signUp.trim()
-password.trim()
-if (signUp && password) {
+const submit = document.getElementById('signup')
+
+async function newUser(event){
+//username.trim()
+//password.trim()
+event.preventDefault();
+console.log('you signed up')
+const usernameValue = document.getElementById('username').value.trim();
+const passwordValue = document.getElementById('password').value.trim();
+if (username && password) {
     // Send the e-mail and password to the server
-    const response = await fetch('/api/users/login', {
+    console.log({usernameValue, passwordValue})
+
+    const signUpData = {
+        user_name: usernameValue,
+        password: passwordValue
+    }
+
+    const response = await fetch('/api/login', {
       method: 'POST',
-      body: JSON.stringify({ signUp, password }),
+      body: JSON.stringify(signUpData),
       headers: { 'Content-Type': 'application/json' },
     });
 
 if (response.ok) {
-    document.location.replace('/');
+    //document.location.replace('/');
     alert('sign up successful')
   } else {
     alert('Failed to sign up');
-  }
-}}
+   }
+}
+form.reset()
+}
 
 
-
-signUp.addEventListener("click", function(e) {
-e.defaultPrevented;
-newUser(signUp.value, password.value)
-})
+form.addEventListener("submit", newUser);
